@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[3]:
 
 
 import acquire
@@ -22,7 +22,7 @@ np.random.seed(123)
 
 # ### Acquiring Iris Data
 
-# In[16]:
+# In[4]:
 
 
 #aquire iris data
@@ -30,7 +30,7 @@ iris_df = acquire.get_iris_data()
 iris_df.head()
 
 
-# In[17]:
+# In[5]:
 
 
 #rename so split works on renamed column
@@ -39,7 +39,27 @@ iris_df = iris_df.rename(columns={'species_name' : 'species'})
 
 # ### Splitting Iris Data
 
+# In[20]:
+
+
+train, test = train_test_split(iris_df, test_size = .2, random_state=123, stratify=iris_df.species)
+
+
 # In[22]:
+
+
+train, validate = train_test_split(train, test_size=.3, random_state=123, stratify=train.species)
+
+
+# In[23]:
+
+
+print(f'Train: {train.shape}')
+print(f'Validate: {validate.shape}')
+print(f'Test: {test.shape}')
+
+
+# In[24]:
 
 
 #split data function
@@ -54,7 +74,7 @@ def split_data(iris_df):
 
 # ## Prepare Iris Data
 
-# In[19]:
+# In[25]:
 
 
 #prepare function to prep iris data
@@ -70,7 +90,7 @@ def prep_iris(iris_df):
     return iris_df
 
 
-# In[20]:
+# In[26]:
 
 
 #bring in fresh iris data to test prep function
@@ -78,7 +98,7 @@ iris_df = acquire.get_iris_data()
 iris_df.head()
 
 
-# In[21]:
+# In[27]:
 
 
 #test prep_iris function on fresh iris data
@@ -86,9 +106,15 @@ iris_df = prep_iris(iris_df)
 iris_df.head()
 
 
+# In[29]:
+
+
+train.head()
+
+
 # ### Acquiring Titanic Data
 
-# In[25]:
+# In[10]:
 
 
 titanic_df = acquire.get_titanic_data()
@@ -97,7 +123,27 @@ titanic_df.head()
 
 # ### Splitting Titanic Data
 
-# In[26]:
+# In[30]:
+
+
+train, test = train_test_split(titanic_df, test_size = .2, random_state=123, stratify=titanic_df.survived)
+
+
+# In[31]:
+
+
+train, validate = train_test_split(train, test_size=.3, random_state=123, stratify=train.survived)
+
+
+# In[32]:
+
+
+print(f'Train: {train.shape}')
+print(f'Validate: {validate.shape}')
+print(f'Test: {test.shape}')
+
+
+# In[11]:
 
 
 #split data function
@@ -112,7 +158,7 @@ def split_data(titanic_df):
 
 # ## Prepare Titanic Data
 
-# In[27]:
+# In[12]:
 
 
 def prep_titanic(titanic_df):
@@ -124,17 +170,20 @@ def prep_titanic(titanic_df):
     titanic_df = titanic_df.drop(columns=cols_to_drop)
     dummy_df = pd.get_dummies(titanic_df[['sex', 'embark_town']], dummy_na=False, drop_first=[True, True])
     titanic_df = pd.concat([titanic_df, dummy_df], axis=1)
+    
+    # split the data
+    train, validate, test = split_data(titanic_df)
     return titanic_df
 
 
-# In[28]:
+# In[13]:
 
 
 titanic_df = acquire.get_titanic_data()
 titanic_df.head()
 
 
-# In[29]:
+# In[14]:
 
 
 titanic_df = prep_titanic(titanic_df)
@@ -143,7 +192,7 @@ titanic_df.head()
 
 # ### Acquiring Telco Data
 
-# In[38]:
+# In[15]:
 
 
 telco_df = acquire.get_telco_data()
@@ -152,7 +201,27 @@ telco_df.head()
 
 # ### Splitting Telco Data
 
-# In[43]:
+# In[33]:
+
+
+train, test = train_test_split(telco_df, test_size = .2, random_state=123, stratify=telco_df.churn)
+
+
+# In[34]:
+
+
+train, validate = train_test_split(train, test_size=.3, random_state=123, stratify=train.churn)
+
+
+# In[35]:
+
+
+print(f'Train: {train.shape}')
+print(f'Validate: {validate.shape}')
+print(f'Test: {test.shape}')
+
+
+# In[16]:
 
 
 #split data function
@@ -167,7 +236,7 @@ def split_data(telco_df):
 
 # ## Prepare Telco Data
 
-# In[44]:
+# In[17]:
 
 
 def prep_telco(telco_df):
@@ -194,14 +263,14 @@ def prep_telco(telco_df):
     return telco_df
 
 
-# In[45]:
+# In[18]:
 
 
 telco_df = acquire.get_telco_data()
 telco_df.head()
 
 
-# In[46]:
+# In[19]:
 
 
 telco_df = prep_telco(telco_df)
